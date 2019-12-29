@@ -21,6 +21,7 @@ class Parser:
 			self.handle_print(line)
 			self.handle_if(line)
 			self.handle_end_else(line)
+			self.handle_while(line)
 
 		if self.DEBUG:
 			print("Commands:")
@@ -185,7 +186,15 @@ class Parser:
 				else:
 					self.message = "Wrong condition syntax at line {}."
 					raise SyntaxError(self.message)	
-			self.commands.append(line)			
+			self.commands.append(line)		
+
+
+	def handle_while(self, line):
+		if (line[0].type == 'WHILE'):
+			if (line[1].type != 'OPEN_BRACKET' or line[len(line) - 1].type != 'BEGIN' or line[len(line) - 2].type != 'DO' or line[len(line) - 3].type != 'CLOSE_BRACKET'):
+				self.message = "Wrong condition syntax at line {}."
+				raise SyntaxError(self.message)
+			# self.commands.append(line)
 				
 
 	def find_in_line(self, line, type_to_find):
